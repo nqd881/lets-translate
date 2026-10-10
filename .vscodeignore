@@ -2,7 +2,6 @@
 .vscode-test/**
 src/**
 scripts/**
-images/icon.svg
 .gitignore
 tsconfig.json
 esbuild.js
