@@ -1,0 +1,303 @@
+{
+  "name": "lets-translate",
+  "displayName": "Let's Translate",
+  "description": "Translate selected text inline, with smart paragraph and list handling.",
+  "version": "1.0.0",
+  "publisher": "nqd881",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nqd881/lets-translate.git"
+  },
+  "homepage": "https://github.com/nqd881/lets-translate#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:lets-translate.translateSelection",
+    "onCommand:lets-translate.translateInput"
+  ],
+  "main": "./out/extension.js",
+  "icon": "images/icon.png",
+  "contributes": {
+    "commands": [
+      {
+        "command": "lets-translate.translateSelection",
+        "title": "Translate Selected",
+        "category": "Let's Translate"
+      },
+      {
+        "command": "lets-translate.translateInput",
+        "title": "Translate Input",
+        "category": "Let's Translate"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "lets-translate.translateSelection",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+4",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "lets-translate.translateSelection",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Let's Translate",
+      "properties": {
+        "lets-translate.provider": {
+          "type": "string",
+          "enum": [
+            "google",
+            "deepl",
+            "youdao"
+          ],
+          "default": "google",
+          "description": "Translation provider to use."
+        },
+        "lets-translate.popupTimeout": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 2147483,
+          "description": "Inline translation timeout in seconds. 0 disables automatic dismissal. Results still clear on mouse selection changes, document edits, or editor switches."
+        },
+        "lets-translate.translationMode": {
+          "type": "string",
+          "enum": ["lbl", "all", "smart"],
+          "enumItemLabels": ["Line by Line", "Whole Selection", "Structure-Aware"],
+          "enumDescriptions": [
+            "Translate each nonblank line independently and preserve blank lines.",
+            "Translate the complete input unchanged in one request. Formatting depends on the provider.",
+            "Translate paragraphs and list items together while preserving common structure and fenced code."
+          ],
+          "default": "smart",
+          "description": "Translation strategy for selected text and input text."
+        },
+        "lets-translate.popupMaxWidth": {
+          "type": "integer",
+          "default": 80,
+          "minimum": 20,
+          "maximum": 240,
+          "description": "Maximum inline translation width in approximate character columns, including the icon gutter but excluding border and padding. Long text wraps without truncation. Applies to the next translation."
+        },
+        "lets-translate.sourceLanguage": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "zh-CN",
+            "zh-TW",
+            "en",
+            "ja",
+            "ko",
+            "fr",
+            "de",
+            "es",
+            "pt",
+            "pt-BR",
+            "ru",
+            "it",
+            "nl",
+            "pl",
+            "ar",
+            "th",
+            "vi",
+            "id",
+            "ms",
+            "tr",
+            "uk",
+            "cs",
+            "da",
+            "fi",
+            "el",
+            "hu",
+            "sv",
+            "nb",
+            "ro",
+            "sk",
+            "bg",
+            "et",
+            "lv",
+            "lt",
+            "sl",
+            "hr"
+          ],
+          "enumItemLabels": [
+            "Auto Detect",
+            "Chinese Simplified",
+            "Chinese Traditional",
+            "English",
+            "Japanese",
+            "Korean",
+            "French",
+            "German",
+            "Spanish",
+            "Portuguese",
+            "Portuguese-Brazil",
+            "Russian",
+            "Italian",
+            "Dutch",
+            "Polish",
+            "Arabic",
+            "Thai",
+            "Vietnamese",
+            "Indonesian",
+            "Malay",
+            "Turkish",
+            "Ukrainian",
+            "Czech",
+            "Danish",
+            "Finnish",
+            "Greek",
+            "Hungarian",
+            "Swedish",
+            "Norwegian",
+            "Romanian",
+            "Slovak",
+            "Bulgarian",
+            "Estonian",
+            "Latvian",
+            "Lithuanian",
+            "Slovenian",
+            "Croatian"
+          ],
+          "description": "Source language (use 'auto' to detect)."
+        },
+        "lets-translate.targetLanguage": {
+          "type": "string",
+          "default": "vi",
+          "enum": [
+            "zh-CN",
+            "zh-TW",
+            "en",
+            "ja",
+            "ko",
+            "fr",
+            "de",
+            "es",
+            "pt",
+            "pt-BR",
+            "ru",
+            "it",
+            "nl",
+            "pl",
+            "ar",
+            "th",
+            "vi",
+            "id",
+            "ms",
+            "tr",
+            "uk",
+            "cs",
+            "da",
+            "fi",
+            "el",
+            "hu",
+            "sv",
+            "nb",
+            "ro",
+            "sk",
+            "bg",
+            "et",
+            "lv",
+            "lt",
+            "sl",
+            "hr"
+          ],
+          "enumItemLabels": [
+            "Chinese Simplified",
+            "Chinese Traditional",
+            "English",
+            "Japanese",
+            "Korean",
+            "French",
+            "German",
+            "Spanish",
+            "Portuguese",
+            "Portuguese-Brazil",
+            "Russian",
+            "Italian",
+            "Dutch",
+            "Polish",
+            "Arabic",
+            "Thai",
+            "Vietnamese",
+            "Indonesian",
+            "Malay",
+            "Turkish",
+            "Ukrainian",
+            "Czech",
+            "Danish",
+            "Finnish",
+            "Greek",
+            "Hungarian",
+            "Swedish",
+            "Norwegian",
+            "Romanian",
+            "Slovak",
+            "Bulgarian",
+            "Estonian",
+            "Latvian",
+            "Lithuanian",
+            "Slovenian",
+            "Croatian"
+          ],
+          "description": "Target language code."
+        },
+        "lets-translate.google.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Google Translation API key."
+        },
+        "lets-translate.deepl.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "DeepL API key."
+        },
+        "lets-translate.deepl.apiUrl": {
+          "type": "string",
+          "default": "https://api-free.deepl.com/v2/translate",
+          "description": "DeepL API endpoint. Use https://api.deepl.com/v2/translate for Pro."
+        },
+        "lets-translate.youdao.appKey": {
+          "type": "string",
+          "default": "",
+          "description": "Youdao appKey."
+        },
+        "lets-translate.youdao.appSecret": {
+          "type": "string",
+          "default": "",
+          "description": "Youdao appSecret."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "dev": "node esbuild.js --watch",
+    "watch": "node esbuild.js --watch",
+    "compile": "node esbuild.js --production",
+    "test": "node --test scripts/test-inline-popup.cjs scripts/test-translation-modes.cjs scripts/test-popup-layout.cjs scripts/test-providers.cjs",
+    "lint": "echo \"No lint configured\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.27.3",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "axios": "^1.20.0"
+  }
+}
