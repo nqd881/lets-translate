@@ -2,7 +2,7 @@
   "name": "lets-translate",
   "displayName": "Let's Translate",
   "description": "Translate selected text inline, with smart paragraph and list handling.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "nqd881",
   "license": "MIT",
   "repository": {
@@ -73,8 +73,16 @@
         },
         "lets-translate.translationMode": {
           "type": "string",
-          "enum": ["lbl", "all", "smart"],
-          "enumItemLabels": ["Line by Line", "Whole Selection", "Structure-Aware"],
+          "enum": [
+            "lbl",
+            "all",
+            "smart"
+          ],
+          "enumItemLabels": [
+            "Line by Line",
+            "Whole Selection",
+            "Structure-Aware"
+          ],
           "enumDescriptions": [
             "Translate each nonblank line independently and preserve blank lines.",
             "Translate the complete input unchanged in one request. Formatting depends on the provider.",
