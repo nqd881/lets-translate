@@ -54,6 +54,7 @@ test("scrolling redraws one translation block without resetting its lifetime", a
   };
   const vscode = {
     Position, Range,
+    ThemeColor: class { constructor(id) { this.id = id; } },
     TextEditorSelectionChangeKind: { Keyboard: 1, Mouse: 2 },
     ProgressLocation: { Notification: 15 },
     window: {
@@ -141,7 +142,19 @@ test("scrolling redraws one translation block without resetting its lifetime", a
   assert.deepEqual(captured, ["hello world again"], "smart is the default for selected text");
   assert.deepEqual(targets, ["vi"], "the runtime default target is Vietnamese");
   assert.equal(timers.size, 0, "default has no timeout");
-  assert.match(style(), /max-width: calc\(80ch \+ 10px\)/, "default maximum width is 80 columns");
+  assert.match(style(), /max-width: calc\(80ch \+ 12px\)/, "default width includes padding and the thicker border");
+  assert.match(style(), /(?:^| )width: calc\(\d+ch \+ 12px\)/, "content width includes the same border allowance");
+  const attachment = editor.decorations[0].renderOptions.before;
+  for (const [property, token] of [
+    ["backgroundColor", "editorHoverWidget.background"],
+    ["color", "editorHoverWidget.foreground"],
+    ["borderColor", "focusBorder"]
+  ]) {
+    assert.ok(attachment[property] instanceof vscode.ThemeColor, `${property} uses native theme resolution`);
+    assert.equal(attachment[property].id, token);
+  }
+  assert.equal(attachment.border, "2px solid");
+  assert.doesNotMatch(style(), /border(?:-color)?:/, "injected CSS cannot override the theme border");
   assert.equal(editor.decorations.length, 1, "multiline text uses one decoration");
   assert.equal((style().match(/\\a /g) ?? []).length, 2, "all three translated lines are retained");
   assert.match(style(), /\\27 /, "quotes are escaped in CSS content");
@@ -215,7 +228,7 @@ test("scrolling redraws one translation block without resetting its lifetime", a
   input = "source";
   translated = "alpha beta gamma delta epsilon";
   await translate();
-  assert.match(style(), /max-width: calc\(20ch \+ 10px\)/);
+  assert.match(style(), /max-width: calc\(20ch \+ 12px\)/);
   assert.equal((style().match(/\\a /g) ?? []).length, 2, "placement uses three wrapped display lines");
   assert.match(style(), /translateY\(-84px\)/, "wrapped height is used for above-source positioning");
   assert.match(style(), /epsilon/, "the paragraph ending is displayed");

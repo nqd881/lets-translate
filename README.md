@@ -93,6 +93,12 @@ Use `"lets-translate.popupMaxWidth": 50` for a narrower translation box, for exa
 
 Wrapping affects only the displayed result, not the text sent to the provider. Popup placement uses the wrapped line count, and scrolling does not retranslate the text or restart its timeout. Width is approximate, not the editor's measured pixel width: use a smaller setting for narrow panes. Very tall translations can still exceed the viewport vertically; no text is deliberately truncated, but this decoration-based box does not provide internal scrolling.
 
+The box uses the theme's hover-widget background and foreground, with a two-pixel
+accent border from `focusBorder`. VS Code resolves these theme colors for light,
+dark, custom, and high-contrast themes and updates them when the theme changes.
+The width calculation includes the border and padding separately from the
+configured character-column limit.
+
 The inline box uses editor decorations, not a native popup. Foreground styling is best-effort and cannot place it above every VS Code UI layer. The translation is rendered as one multiline block and repositioned above or below the source when the editor scrolls. If the source selection leaves the viewport, the box hides; scrolling back restores it unless it has expired or been dismissed. Scrolling does not restart the timeout or send another translation request. Placement uses approximate line heights; word wrap, folded code, oversized results, and viewport edges can still cause clipping.
 
 The box is non-interactive: clicks pass through to the editor. Mouse clicks that change selection dismiss it, but arbitrary workbench clicks or clicks that leave selection unchanged may not. Keyboard cursor movement alone does not dismiss it; document edits and editor switches do. Logs remain available in **Output > Let's Translate** without opening Output automatically. The inline overlay has no supported inside/outside click detection.
@@ -233,6 +239,7 @@ Automated checks use mocks or controlled provider promises; they do not establis
 9. Set the timeout to `5`, translate, and keep scrolling. The result should still expire about five seconds after display. If it expires while off-screen, scrolling back must not restore it.
 10. Leave `lets-translate.popupMaxWidth` unset and translate a long paragraph. It should wrap within about 80 columns, including the icon gutter. Check that the ending is present. Set `"lets-translate.popupMaxWidth": 40` and translate again; the box should become narrower and taller, with placement based on the wrapped height.
 11. Test wrapped list items, paragraph breaks, a long URL, CJK text, and emoji. List continuation lines should align with item content, blank lines should remain, and words without spaces should wrap without losing characters. Test the narrower setting in a split editor and repeat the scroll/timeout checks.
+12. Set the timeout to `0`, translate text, then run **Preferences: Color Theme** and switch between light, dark, and high-contrast themes. The background, text, and accent border should follow the theme without another translation request. Check a narrow wrapped result for clipping at the right edge; the two-pixel border should not cover the text.
 
 ### Manual Translation Mode Checks
 

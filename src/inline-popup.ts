@@ -77,12 +77,14 @@ export function createInlinePopup(log: Logger): {
       renderOptions: {
         before: {
           contentText: "",
-          backgroundColor: "#252526",
-          color: "#cccccc",
+          backgroundColor: new vscode.ThemeColor("editorHoverWidget.background"),
+          color: new vscode.ThemeColor("editorHoverWidget.foreground"),
+          border: "2px solid",
+          borderColor: new vscode.ThemeColor("focusBorder"),
           textDecoration:
             `none; content: '${content}'; border-radius: 3px; ` +
-            `padding: 0 4px; width: calc(${width}ch + 10px); ` +
-            `max-width: calc(${maxWidth}ch + 10px); border: 1px solid #3c3c3c; ` +
+            `padding: 0 4px; width: calc(${width}ch + 12px); ` +
+            `max-width: calc(${maxWidth}ch + 12px); ` +
             "font-style: normal; font-weight: 400; font-size: inherit; font-family: inherit; " +
             `line-height: ${lineHeight}px; position: absolute; top: 0; ` +
             "display: inline-block; white-space: pre; z-index: 1000; pointer-events: none; " +
